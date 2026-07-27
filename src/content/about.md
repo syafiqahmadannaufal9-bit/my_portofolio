@@ -13,8 +13,3 @@ Saya adalah seorang **Frontend Developer** dan **Creative Technologist** dengan 
 
 Berbekal pengalaman lebih dari 5 tahun di dunia pengembangan web, saya menguasai ekosistem **React**, **Vite**, **Three.js**, **GSAP**, dan **Tailwind CSS**. Saya percaya bahwa website modern tidak hanya harus berfungsi secara sempurna, tetapi juga harus memberikan pengalaman visual yang mengagumkan bagi setiap pengunjung.
 
-### Keahlian Utama
-* **Frontend Architecture**: React 18, Next.js, TypeScript, State Management, Tailwind CSS, styled-components.
-* **3D & Creative Web**: Three.js, React Three Fiber (R3F), GLSL Shaders, WebGL optimization.
-* **Animation & Micro-interactions**: GSAP (ScrollTrigger), Framer Motion, CSS Animations.
-* **Performance & SEO**: Lighthouse 90+, Web Vitals Optimization, Semantic HTML5, Dynamic Metadata.

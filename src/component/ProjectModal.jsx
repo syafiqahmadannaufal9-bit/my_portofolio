@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import { X, ExternalLink, Layers, Calendar } from 'lucide-react';
+import { X, ExternalLink, Layers, Calendar, FolderGit2 } from 'lucide-react';
 import { GithubIcon } from './Icons';
 
 export default function ProjectModal({ project, onClose }) {
@@ -21,9 +21,16 @@ export default function ProjectModal({ project, onClose }) {
           <X className="w-5 h-5" />
         </button>
 
-        <div className="relative h-64 sm:h-80 w-full overflow-hidden">
-          <img src={thumbnail} alt={title} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
+        <div className="relative h-48 sm:h-64 w-full overflow-hidden bg-gray-100">
+          {thumbnail ? (
+            <img src={thumbnail} alt={title} className="w-full h-full object-cover" />
+          ) : (
+            <div className="w-full h-full flex flex-col items-center justify-center bg-gray-100 text-gray-400">
+              <FolderGit2 className="w-12 h-12 mb-2 opacity-60" />
+              <span className="text-xs font-bold uppercase tracking-widest text-gray-400">Project Details</span>
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent opacity-60" />
           <span className="absolute bottom-4 left-6 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-black text-white">
             {category}
           </span>

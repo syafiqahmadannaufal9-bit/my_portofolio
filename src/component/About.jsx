@@ -2,15 +2,30 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import { loadSingleMarkdown } from '../utils/markdown';
 import aboutRaw from '../content/about.md?raw';
-import { Download, Award, Briefcase, Users } from 'lucide-react';
+import { Download, GraduationCap } from 'lucide-react';
 
 export default function About() {
   const { frontmatter, content } = loadSingleMarkdown(aboutRaw);
 
-  const stats = [
-    { label: 'Tahun Pengalaman', value: frontmatter.experienceYears || '5+', icon: Briefcase },
-    { label: 'Proyek Selesai', value: frontmatter.completedProjects || '30+', icon: Award },
-    { label: 'Klien Puas', value: frontmatter.satisfiedClients || '25+', icon: Users },
+  const educationList = [
+    {
+      degree: 'S1 rekayasa Perangkat Lunak / Ilmu Komputer',
+      institution: 'Insitut Teknologi Statistika dan Bisnis Muhammadiyah Semarang',
+      period: '2025 - 2029',
+      description: 'Studi pada Rekayasa Perangkat Lunak, Pengembangan Web Frontend, Struktur Data, serta Desain Antarmuka Interaktif.',
+    },
+    {
+      degree: 'Sertifikasi CISCO Jaringan Komputer',
+      institution: 'CISCO Networking Academy',
+      period: '2024',
+      description: 'jaringan komputer dari Cisco Systems, yang mencakup tingkat utama seperti CCNA (Associate), CCNP (Profesional), dan CCIE (Expert). ',
+    },
+     {
+      degree: 'Sertifikasi Frontend & Web Development',
+      institution: 'Bootcamp / Platform Edukasi',
+      period: '2026',
+      description: 'Spesialisasi arsitektur React 18, Tailwind CSS, animasi GSAP, dan grafik 3D interaktif Three.js.',
+    },
   ];
 
   return (
@@ -34,20 +49,31 @@ export default function About() {
             <ReactMarkdown>{content}</ReactMarkdown>
           </div>
 
-          <div className="grid grid-cols-3 gap-3 mb-8">
-            {stats.map((stat, idx) => {
-              const IconComponent = stat.icon;
-              return (
+          {/* Latar Belakang Pendidikan */}
+
+          {/* Latar Belakang Pendidikan */}
+          <div className="mb-8 border-t border-black/10 pt-6">
+            <h5 className="text-xs uppercase tracking-widest font-bold mb-4 opacity-60 flex items-center gap-2">
+              <GraduationCap className="w-4 h-4 text-black" />
+              Latar Belakang Pendidikan
+            </h5>
+            <div className="space-y-4">
+              {educationList.map((edu, idx) => (
                 <div
                   key={idx}
-                  className="p-4 rounded-2xl border text-center transition-transform hover:-translate-y-1 backdrop-blur-md bg-white/80 border-black/20 text-black"
+                  className="p-4 rounded-2xl border border-black/15 bg-white/80 backdrop-blur-md transition-all hover:border-black shadow-sm"
                 >
-                  <IconComponent className="w-5 h-5 mx-auto mb-2 text-black" />
-                  <p className="text-xl sm:text-2xl font-black">{stat.value}</p>
-                  <p className="text-[10px] sm:text-xs font-medium opacity-75 mt-1">{stat.label}</p>
+                  <div className="flex items-center justify-between mb-1">
+                    <h6 className="font-bold text-sm sm:text-base text-black">{edu.degree}</h6>
+                    <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-gray-100 border border-black/10 text-gray-700">
+                      {edu.period}
+                    </span>
+                  </div>
+                  <p className="text-xs font-semibold text-gray-600 mb-1.5">{edu.institution}</p>
+                  <p className="text-xs text-gray-700 leading-relaxed opacity-90">{edu.description}</p>
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
 
           <div>

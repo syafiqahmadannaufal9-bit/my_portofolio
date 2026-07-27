@@ -1,29 +1,27 @@
 [
   {
-    "category": "Frontend Development",
+    "category": "Frontend & Web Development",
     "skills": [
-      { "name": "React 18 & Vite", "level": 95, "icon": "Code2" },
-      { "name": "JavaScript (ES6+) / TS", "level": 90, "icon": "FileCode" },
-      { "name": "Tailwind CSS & Styled", "level": 95, "icon": "Palette" },
-      { "name": "HTML5 & Semantic UI", "level": 98, "icon": "Layout" }
+      { "name": "HTML5 & CSS3", "level": 95, "icon": "Layout" },
+      { "name": "JavaScript (ES6+)", "level": 90, "icon": "FileCode" },
+      { "name": "React & Vite", "level": 88, "icon": "Code2" },
+      { "name": "Tailwind CSS", "level": 92, "icon": "Palette" }
     ]
   },
   {
-    "category": "3D & Interactive Web",
+    "category": "Animation & Interactive",
     "skills": [
-      { "name": "Three.js & WebGL", "level": 85, "icon": "Box" },
-      { "name": "React Three Fiber (R3F)", "level": 88, "icon": "Cpu" },
-      { "name": "GSAP & ScrollTrigger", "level": 92, "icon": "Sparkles" },
-      { "name": "Framer Motion", "level": 90, "icon": "Zap" }
+      { "name": "GSAP & ScrollTrigger", "level": 88, "icon": "Sparkles" },
+      { "name": "WebGL / 3D Web Basics", "level": 80, "icon": "Box" },
+      { "name": "Responsive UI Design", "level": 90, "icon": "Zap" },
+      { "name": "Framer Motion", "level": 85, "icon": "Palette" }
     ]
   },
   {
-    "category": "Tools & Workflow",
+    "category": "Languages & Tools",
     "skills": [
-      { "name": "Git & GitHub", "level": 92, "icon": "GitBranch" },
-      { "name": "Vite & Build Optimization", "level": 90, "icon": "Layers" },
-      { "name": "Vercel / Netlify Deploy", "level": 95, "icon": "Globe" },
-      { "name": "Figma to Code", "level": 88, "icon": "Figma" }
+      { "name": "Git & GitHub Workflow", "level": 90, "icon": "GitBranch" },
+      { "name": "Python", "level": 85, "icon": "Cpu" }
     ]
   }
 ]

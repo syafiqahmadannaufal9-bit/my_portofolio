@@ -60,12 +60,19 @@ export default function Portfolio() {
                 className="group rounded-3xl border overflow-hidden cursor-pointer backdrop-blur-xl transition-all duration-300 transform hover:-translate-y-2 shadow-xl flex flex-col justify-between bg-white/70 border-black/20 hover:border-black"
               >
                 <div>
-                  <div className="relative h-52 w-full overflow-hidden bg-gray-200">
-                    <img
-                      src={thumbnail}
-                      alt={title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
+                  <div className="relative h-52 w-full overflow-hidden bg-gray-100">
+                    {thumbnail ? (
+                      <img
+                        src={thumbnail}
+                        alt={title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex flex-col items-center justify-center bg-gray-100 text-gray-400 group-hover:bg-gray-200/80 transition-colors">
+                        <FolderGit2 className="w-10 h-10 mb-2 opacity-60" />
+                        <span className="text-[11px] font-bold uppercase tracking-widest text-gray-400">Project Preview</span>
+                      </div>
+                    )}
                     <div className="absolute top-4 left-4">
                       <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-black text-white">
                         {category}

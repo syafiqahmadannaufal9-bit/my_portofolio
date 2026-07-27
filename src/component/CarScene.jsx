@@ -93,34 +93,40 @@ function PorscheModel() {
     let mm = gsap.matchMedia();
 
     mm.add("(min-width: 768px)", () => {
+      // 1. Initial State (Hero / Home) - Mobil di kanan
       gsap.set(groupRef.current.position, { x: 2.8, y: -0.2, z: 0 });
       gsap.set(groupRef.current.rotation, { x: 0.05, y: Math.PI * -0.35, z: 0 });
       gsap.set(groupRef.current.scale, { x: 7.5, y: 7.5, z: 7.5 });
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: '#main-scroll-container',
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: 1.5,
-          invalidateOnRefresh: true,
-        }
-      });
+      // 2. Animasi ke About (Pindah ke kiri)
+      gsap.timeline({
+        scrollTrigger: { trigger: '#about', start: 'top bottom', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true }
+      })
+      .fromTo(groupRef.current.position, { x: 2.8, y: -0.2, z: 0 }, { x: -3.2, y: 0, z: 0, ease: 'power1.inOut' }, 0)
+      .fromTo(groupRef.current.rotation, { x: 0.05, y: Math.PI * -0.35, z: 0 }, { x: 0.05, y: Math.PI * 0.2, z: 0, ease: 'power1.inOut' }, 0)
+      .fromTo(groupRef.current.scale, { x: 7.5, y: 7.5, z: 7.5 }, { x: 7.2, y: 7.2, z: 7.2, ease: 'power1.inOut' }, 0);
 
-      // ponytail: direct transition to center after skills (experience removed)
-      tl.to(groupRef.current.position, { x: -3.2, y: 0, ease: 'power1.inOut' }, 0)
-        .to(groupRef.current.rotation, { y: Math.PI * 0.2, x: 0.05, ease: 'power1.inOut' }, 0)
-        .to(groupRef.current.scale, { x: 6.5, y: 6.5, z: 6.5, ease: 'power1.inOut' }, 0);
+      // 3. Animasi ke Skills (Pindah ke kanan)
+      gsap.timeline({
+        scrollTrigger: { trigger: '#skills', start: 'top bottom', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true }
+      })
+      .fromTo(groupRef.current.position, { x: -3.2, y: 0, z: 0 }, { x: 3.0, y: 0.2, z: 0, ease: 'power1.inOut' }, 0)
+      .fromTo(groupRef.current.rotation, { x: 0.05, y: Math.PI * 0.2, z: 0 }, { x: 0.15, y: Math.PI * 0.80, z: 0, ease: 'power1.inOut' }, 0)
+      .fromTo(groupRef.current.scale, { x: 7.2, y: 7.2, z: 7.2 }, { x: 7.5, y: 7.5, z: 7.5, ease: 'power1.inOut' }, 0);
 
-      tl.to(groupRef.current.position, { x: 2.8, y: -0.1, ease: 'power1.inOut' }, 1)
-        .to(groupRef.current.rotation, { y: Math.PI * 0.80, x: 0.15, ease: 'power1.inOut' }, 1)
-        .to(groupRef.current.scale, { x: 7.5, y: 7.5, z: 7.5, ease: 'power1.inOut' }, 1);
+      // 4. Animasi ke Portfolio (Pindah ke tengah bawah)
+      gsap.timeline({
+        scrollTrigger: { trigger: '#portfolio', start: 'top bottom', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true }
+      })
+      .fromTo(groupRef.current.position, { x: 3.0, y: 0.2, z: 0 }, { x: 0, y: -2.1, z: 0, ease: 'power1.inOut' }, 0)
+      .fromTo(groupRef.current.rotation, { x: 0.15, y: Math.PI * 0.80, z: 0 }, { x: 0.05, y: Math.PI * 2.2, z: 0, ease: 'power1.inOut' }, 0)
+      .fromTo(groupRef.current.scale, { x: 7.5, y: 7.5, z: 7.5 }, { x: 5.5, y: 5.5, z: 5.5, ease: 'power1.inOut' }, 0);
 
-      tl.to(groupRef.current.position, { x: 0, y: -0.2, ease: 'power1.inOut' }, 2)
-        .to(groupRef.current.rotation, { y: Math.PI * 2.2, x: 0.05, ease: 'power1.inOut' }, 2)
-        .to(groupRef.current.scale, { x: 5.5, y: 5.5, z: 5.5, ease: 'power1.inOut' }, 2);
-
-      tl.to(groupRef.current.position, { y: -2.5, ease: 'power1.inOut' }, 3);
+      // 5. Animasi ke Contact / Footer (Menghilang perlahan ke bawah)
+      gsap.timeline({
+        scrollTrigger: { trigger: '#contact', start: 'top bottom', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true }
+      })
+      .fromTo(groupRef.current.position, { x: 0, y: -2.1, z: 0 }, { x: 0, y: -2.5, z: 0, ease: 'power1.inOut' }, 0);
     });
 
     mm.add('(max-width: 767px)', () => {
