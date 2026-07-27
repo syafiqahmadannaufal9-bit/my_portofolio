@@ -1,0 +1,347 @@
+.staggered-menu-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 40;
+  pointer-events: none;
+}
+
+.staggered-menu-wrapper.fixed-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 50;
+  overflow: hidden;
+}
+
+/* ─── Header ─────────────────────────────── */
+.staggered-menu-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5em 2em;
+  background: transparent;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.staggered-menu-header > * {
+  pointer-events: auto;
+}
+
+/* ─── Logo ────────────────────────────────── */
+.sm-logo {
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+.sm-logo-img {
+  display: block;
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+}
+
+.sm-logo-text {
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: #000;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.sm-logo-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #000;
+  display: inline-block;
+}
+
+/* ─── Toggle Button ───────────────────────── */
+.sm-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #000;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  overflow: visible;
+  text-transform: uppercase;
+}
+
+.sm-toggle:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.sm-toggle-textWrap {
+  position: relative;
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.sm-toggle-textInner {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.sm-toggle-line {
+  display: block;
+  height: 1em;
+  line-height: 1;
+}
+
+/* ─── Icon (+/×) ──────────────────────────── */
+.sm-icon {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+
+.sm-icon-line {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+
+.sm-line {
+  display: none !important;
+}
+
+/* ─── Pre-layer stagger underlays ────────── */
+.sm-prelayers {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: clamp(280px, 42vw, 460px);
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+}
+
+[data-position='left'] .sm-prelayers {
+  right: auto;
+  left: 0;
+}
+
+.sm-prelayer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  transform: translateX(0);
+  opacity: 0;
+}
+
+/* ─── Panel ───────────────────────────────── */
+.staggered-menu-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: clamp(280px, 42vw, 460px);
+  height: 100%;
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+  padding: 6em 2.5em 2.5em 2.5em;
+  overflow-y: auto;
+  z-index: 10;
+  pointer-events: auto;
+  opacity: 0;
+  overflow: hidden;
+}
+
+[data-position='left'] .staggered-menu-panel {
+  right: auto;
+  left: 0;
+}
+
+.sm-panel-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Batik decorative background ─────────── */
+/* Kawung-inspired repeating motif at the bottom of the panel,
+   fading upward via CSS mask — matches B&W site theme */
+.sm-batik-bg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cellipse cx='15' cy='30' rx='11' ry='8' fill='none' stroke='%23000' stroke-width='0.8' opacity='0.18'/%3E%3Cellipse cx='45' cy='30' rx='11' ry='8' fill='none' stroke='%23000' stroke-width='0.8' opacity='0.18'/%3E%3Cellipse cx='30' cy='15' rx='8' ry='11' fill='none' stroke='%23000' stroke-width='0.8' opacity='0.18'/%3E%3Cellipse cx='30' cy='45' rx='8' ry='11' fill='none' stroke='%23000' stroke-width='0.8' opacity='0.18'/%3E%3Ccircle cx='30' cy='30' r='4' fill='none' stroke='%23000' stroke-width='0.7' opacity='0.12'/%3E%3Ccircle cx='0' cy='0' r='4' fill='none' stroke='%23000' stroke-width='0.7' opacity='0.12'/%3E%3Ccircle cx='60' cy='0' r='4' fill='none' stroke='%23000' stroke-width='0.7' opacity='0.12'/%3E%3Ccircle cx='0' cy='60' r='4' fill='none' stroke='%23000' stroke-width='0.7' opacity='0.12'/%3E%3Ccircle cx='60' cy='60' r='4' fill='none' stroke='%23000' stroke-width='0.7' opacity='0.12'/%3E%3C/svg%3E");
+  background-size: 60px 60px;
+  background-repeat: repeat;
+  -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
+  mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Menu Items ──────────────────────────── */
+.sm-panel-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sm-panel-itemWrap {
+  position: relative;
+  overflow: hidden;
+  line-height: 1;
+}
+
+.sm-panel-item {
+  position: relative;
+  color: #000;
+  font-weight: 600;
+  font-size: clamp(2.4rem, 5vw, 3.5rem);
+  cursor: pointer;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  display: inline-block;
+  text-decoration: none;
+  padding-right: 2.5rem; /* space for the superscript number */
+  transition: color 0.2s;
+}
+
+.sm-panel-item:hover {
+  color: var(--sm-accent, #f0f0f0);
+}
+
+.sm-panel-itemLabel {
+  display: inline-block;
+  will-change: transform;
+  transform-origin: 50% 100%;
+}
+
+/* Numbering */
+.sm-panel-list[data-numbering] {
+  counter-reset: smItem;
+}
+
+.sm-panel-list[data-numbering] .sm-panel-item::after {
+  counter-increment: smItem;
+  content: counter(smItem, decimal-leading-zero);
+  position: absolute;
+  /* Superscript: top-right corner of item, snug after the text */
+  top: 0.15em;
+  right: 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--sm-accent, #5227FF);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  opacity: var(--sm-num-opacity, 0);
+}
+
+/* ─── Divider ─────────────────────────────── */
+.sm-divider {
+  width: 2rem;
+  height: 2px;
+  background: #000;
+  border-radius: 9999px;
+  opacity: 0.2;
+  margin: 0.5rem 0;
+}
+
+/* ─── Socials ─────────────────────────────── */
+.sm-socials {
+  margin-top: auto;
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sm-socials-title {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #000;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.5;
+}
+
+.sm-socials-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.sm-socials-link {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #000;
+  text-decoration: none;
+  position: relative;
+  padding: 2px 0;
+  display: inline-block;
+  transition: opacity 0.2s;
+  letter-spacing: 0.02em;
+}
+
+.sm-socials-list:hover .sm-socials-link { opacity: 0.35; }
+.sm-socials-list:hover .sm-socials-link:hover { opacity: 1; }
+
+/* ─── Responsive ──────────────────────────── */
+@media (max-width: 768px) {
+  .staggered-menu-panel,
+  .sm-prelayers {
+    width: 100%;
+    left: 0;
+    right: 0;
+  }
+}

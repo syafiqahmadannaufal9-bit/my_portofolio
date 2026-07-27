@@ -1,0 +1,29 @@
+[
+  {
+    "category": "Frontend Development",
+    "skills": [
+      { "name": "React 18 & Vite", "level": 95, "icon": "Code2" },
+      { "name": "JavaScript (ES6+) / TS", "level": 90, "icon": "FileCode" },
+      { "name": "Tailwind CSS & Styled", "level": 95, "icon": "Palette" },
+      { "name": "HTML5 & Semantic UI", "level": 98, "icon": "Layout" }
+    ]
+  },
+  {
+    "category": "3D & Interactive Web",
+    "skills": [
+      { "name": "Three.js & WebGL", "level": 85, "icon": "Box" },
+      { "name": "React Three Fiber (R3F)", "level": 88, "icon": "Cpu" },
+      { "name": "GSAP & ScrollTrigger", "level": 92, "icon": "Sparkles" },
+      { "name": "Framer Motion", "level": 90, "icon": "Zap" }
+    ]
+  },
+  {
+    "category": "Tools & Workflow",
+    "skills": [
+      { "name": "Git & GitHub", "level": 92, "icon": "GitBranch" },
+      { "name": "Vite & Build Optimization", "level": 90, "icon": "Layers" },
+      { "name": "Vercel / Netlify Deploy", "level": 95, "icon": "Globe" },
+      { "name": "Figma to Code", "level": 88, "icon": "Figma" }
+    ]
+  }
+]
