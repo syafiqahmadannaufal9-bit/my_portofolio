@@ -3,7 +3,7 @@ title: "SimplyCalc - Web Calculator Application"
 summary: "Aplikasi kalkulator berbasis web dengan antarmuka pengguna yang ringkas, bersih, dan kalkulasi presisi."
 category: "Web Application"
 techStack: ["HTML5", "CSS3", "JavaScript"]
-thumbnail: ""
+thumbnail: "/assets/kalkulator.png"
 gallery: []
 demoUrl: "https://syafiqahmadannaufal9-bit.github.io/kalkulator-simplycalc/calculator.html"
 githubUrl: "https://github.com/syafiqahmadannaufal9-bit/kalkulator-simplycalc"

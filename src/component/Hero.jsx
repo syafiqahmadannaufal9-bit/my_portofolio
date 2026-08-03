@@ -30,11 +30,11 @@ export default function Hero() {
         <motion.h1
           {...animProps}
           custom={1}
-          className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-none mb-6 text-black"
+          className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-none mb-6 text-black"
         >
-          Menciptakan Portofolio <br className="hidden sm:block" />
-          <span className="text-black underline underline-offset-8 decoration-2">
-            Web 3D & Modern
+          Ingin Membuat <br className="hidden sm:block" />
+          <span className="text-[#5227FF] font-serif italic font-light">
+            Web 3D & Modern?
           </span>
         </motion.h1>
 
@@ -43,7 +43,7 @@ export default function Hero() {
           custom={2}
           className="text-lg sm:text-xl font-normal leading-relaxed mb-6 text-gray-800"
         >
-          Halo, saya <span className="font-bold text-black">Syafiq Ahmad</span>.{' '}
+          Halo, saya <span className="font-serif italic font-bold text-[#5227FF]">Syafiq Ahmad</span>.{' '}
           Fokus membangun aplikasi web interaktif kelas dunia menggunakan React, Three.js, GSAP, dan Tailwind CSS.
         </motion.p>
 

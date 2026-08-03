@@ -3,7 +3,7 @@ title: "Supercar Rental Bali"
 summary: "Website bisnis sewa mobil mewah (Supercar) berlokasi di Denpasar, Bali dengan desain interaktif dan responsif."
 category: "Web Application"
 techStack: ["HTML5", "CSS3", "JavaScript", "Responsive Design"]
-thumbnail: ""
+thumbnail: "/assets/rental.png"
 gallery: []
 demoUrl: "https://github.com/syafiqahmadannaufal9-bit/Supercar-Rental-Bali"
 githubUrl: "https://github.com/syafiqahmadannaufal9-bit/Supercar-Rental-Bali"
@@ -12,7 +12,7 @@ date: "2026-02-26"
 ---
 
 ### Ringkasan Proyek
-Website layanan penyewaan supercar mewah yang berbasis di Denpasar, Bali. Dirancang untuk memberikan informasi armada kendaraan eksotis, layanan sewa, dan navigasi pemesanan yang mudah bagi para wisatawan maupun klien lokal.
+Website layanan penyewaan supercar mewah yang berbasis di Denpasar, Bali. Dirancang untuk memberikan layanan sewa, dan navigasi pemesanan yang mudah bagi para wisatawan maupun klien lokal.
 
 ### Fitur & Teknologi
 * **Visual Katalog Supercar**: Layout modern dengan tampilan informasi spesifikasi armada.

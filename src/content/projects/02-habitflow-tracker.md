@@ -1,11 +1,11 @@
 ---
-title: "HabitFlow - Habit Tracker App"
-summary: "Aplikasi prototipe pelacak kebiasaan harian (habit tracker) interaktif berbasis Tailwind CSS dan Supabase backend."
+title: "Xhabit - Habit Tracker App"
+summary: "Aplikasi Jurnaling dan pelacak kebiasaan harian (habit tracker) interaktif berbasis Tailwind CSS dan Supabase backend."
 category: "Web Application"
 techStack: ["React", "Tailwind CSS", "Supabase", "JavaScript"]
-thumbnail: ""
+thumbnail: "/assets/Xhabit.png"
 gallery: []
-demoUrl: "https://github.com/syafiqahmadannaufal9-bit/HabitFlow-WebsiteVersion-1.0"
+demoUrl: "https://xhabit-habittracker.up.railway.app/views/index.html"
 githubUrl: "https://github.com/syafiqahmadannaufal9-bit/HabitFlow-WebsiteVersion-1.0"
 featured: true
 date: "2026-06-16"

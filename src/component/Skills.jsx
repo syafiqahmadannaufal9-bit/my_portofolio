@@ -21,7 +21,7 @@ const StyledCard = styled.div`
 
   &:hover {
     transform: translateY(-4px);
-    border-color: #000000;
+    border-color: #5227FF;
   }
 `;
 
@@ -36,7 +36,7 @@ const ProgressBar = styled.div`
   & > div {
     height: 100%;
     width: ${props => props.$level}%;
-    background: #000000;
+    background: #5227FF;
     border-radius: 9999px;
     transition: width 1s ease-out;
   }
@@ -56,12 +56,12 @@ export default function Skills() {
     >
       <div className="w-full text-left max-w-xl mx-auto md:mx-0">
         <div className="mb-10">
-          <h2 className="text-xs uppercase tracking-widest font-bold mb-2 opacity-60">Kemampuan Teknis</h2>
-          <h3 className="text-4xl sm:text-5xl font-black">Tech Stack</h3>
+          <h2 className="text-xs uppercase tracking-widest font-bold mb-2 text-[#5227FF] opacity-90">Kemampuan Teknis</h2>
+          <h3 className="text-4xl sm:text-5xl font-black text-[#5227FF]">Tech Stack</h3>
           <p className="mt-3 text-base text-gray-800">
             Kombinasi teknologi frontend modern, grafik 3D interaktif, dan alat alur kerja profesional.
           </p>
-          <div className="w-16 h-1 mt-4 rounded-full bg-black" />
+          <div className="w-16 h-1 mt-4 rounded-full bg-[#5227FF]" />
         </div>
 
         <div className="flex flex-wrap gap-2 mb-8">
@@ -71,8 +71,8 @@ export default function Skills() {
               onClick={() => setSelectedCategory(cat)}
               className={`px-4 py-2 rounded-full text-xs font-bold transition-all border backdrop-blur-md ${
                 selectedCategory === cat
-                  ? 'bg-black text-white border-black'
-                  : 'bg-white/80 text-gray-700 border-black/20 hover:border-black'
+                  ? 'bg-[#5227FF] text-white border-[#5227FF]'
+                  : 'bg-white/80 text-gray-700 border-black/20 hover:border-[#5227FF] hover:text-[#5227FF]'
               }`}
             >
               {cat}
@@ -84,7 +84,7 @@ export default function Skills() {
           {filteredCategories.map((group, gIdx) => (
             <div key={gIdx}>
               <h4 className="text-lg font-bold mb-4 flex items-center gap-2 text-black">
-                <span className="w-2 h-2 rounded-full bg-black" />
+                <span className="w-2 h-2 rounded-full bg-[#5227FF]" />
                 {group.category}
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -94,7 +94,7 @@ export default function Skills() {
                     <StyledCard key={sIdx}>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <div className="p-2 rounded-lg bg-gray-100 text-black">
+                          <div className="p-2 rounded-lg bg-[#5227FF]/10 text-[#5227FF]">
                             <IconComp className="w-4 h-4" />
                           </div>
                           <span className="font-bold text-sm">{skill.name}</span>

@@ -56,6 +56,106 @@ function PorscheModel() {
     return { normalizeScale: scale, normalizedPosition: position, shadowY, shadowW, shadowD };
   }, [scene]);
 
+  // ponytail: Categorize model components and cache original positions for exploded view
+  const { parts, originalPositions } = useMemo(() => {
+    const left = [];
+    const right = [];
+    const top = [];
+    const bottom = [];
+    const front = [];
+    const rear = [];
+    const none = [];
+    const origPos = new Map();
+
+    const box = new THREE.Box3().setFromObject(scene);
+    const size = box.getSize(new THREE.Vector3());
+    const sceneCenter = box.getCenter(new THREE.Vector3());
+
+    scene.traverse((child) => {
+      if (child.isMesh) {
+        origPos.set(child.uuid, {
+          x: child.position.x,
+          y: child.position.y,
+          z: child.position.z
+        });
+
+        // Use geometry bounding box for accurate center
+        const center = new THREE.Vector3();
+        if (child.geometry) {
+          child.geometry.computeBoundingBox();
+          child.geometry.boundingBox.getCenter(center);
+        } else {
+          center.copy(child.position);
+        }
+        child.localToWorld(center);
+        
+        // Relative position from center (-1 to 1 range approx)
+        const relX = (center.x - sceneCenter.x) / (size.x / 2);
+        const relY = (center.y - sceneCenter.y) / (size.y / 2);
+        const relZ = (center.z - sceneCenter.z) / (size.z / 2);
+
+        const name = child.name.toLowerCase();
+        
+        // 1. Wheels, rims, calipers go left/right
+        const isWheelOrRimOrCaliper = 
+          name.includes('wheel') || 
+          name.includes('rim') || 
+          name.includes('calliper') || 
+          name.includes('caliper') || 
+          name.includes('polysurface1') || 
+          name.includes('polysurface145') || 
+          name.includes('polysurface289') || 
+          name.includes('polysurface433');
+
+        if (isWheelOrRimOrCaliper) {
+          right.push(child); // ponytail: force all wheels to shift right
+        } 
+        // 2. Specific parts by name
+        else if (name.includes('windowfront') || name.includes('window_front') || name.includes('windowsurroundfront') || name.includes('grille') || name.includes('lightbucket') || name.includes('clear')) {
+          front.push(child); // ponytail: push headlamps/clear glasses to the front
+        }
+        else if (name.includes('licenseplate') || name.includes('engine') || name.includes('red') || name.includes('rear')) {
+          rear.push(child);
+        }
+        else if (name.includes('mirror') || name.includes('badge') || name.includes('sticker') || name.includes('logo') || name.includes('carpaint')) {
+          none.push(child); // ponytail: keep mirrors, stickers and main body attached
+        }
+        else if (name.includes('chassis') || name.includes('interior')) {
+          none.push(child); // ponytail: keep chassis centered
+        }
+        else if (name.includes('glass') || name.includes('window')) {
+          top.push(child);
+        }
+        // 3. General position-based classification for body panels
+        else {
+          const absX = Math.abs(relX);
+          const absY = Math.abs(relY);
+          const absZ = Math.abs(relZ);
+
+          const max = Math.max(absX, absY, absZ);
+
+          if (max === absZ) {
+            if (relZ > 0.15) front.push(child);
+            else if (relZ < -0.15) rear.push(child);
+            else none.push(child); 
+          } else if (max === absX) {
+            if (relX > 0.25) right.push(child);
+            else if (relX < -0.25) left.push(child);
+            else none.push(child);
+          } else {
+            if (relY > 0.25) top.push(child);
+            else bottom.push(child);
+          }
+        }
+      }
+    });
+
+    return { 
+      parts: { left, right, top, bottom, front, rear, none }, 
+      originalPositions: origPos 
+    };
+  }, [scene]);
+
   // ponytail: fixed light-mode black blob shadow
   const shadowTexture = useMemo(() => {
     const canvas = document.createElement('canvas');
@@ -73,6 +173,26 @@ function PorscheModel() {
   }, []);
 
   useEffect(() => {
+    // Expose model inspection to the browser console
+    window.inspectModel = () => {
+      const meshes = [];
+      scene.traverse((child) => {
+        if (child.isMesh) {
+          meshes.push({
+            name: child.name || 'unnamed',
+            type: child.type,
+            parent: child.parent?.name || 'root'
+          });
+        }
+      });
+      console.log("=== 3D Model Inspection: Run in Console ===");
+      console.table(meshes);
+      console.log(`Total Meshes found: ${meshes.length}`);
+    };
+    
+    // Automatically log invitation to run the function
+    console.log("💡 [3D Model Loader] Ketik `inspectModel()` di konsol browser Anda untuk melihat semua komponen mobil!");
+
     scene.traverse((child) => {
       if (child.isMesh && child.material) {
         child.castShadow = false;
@@ -81,6 +201,15 @@ function PorscheModel() {
         if (child.material.roughness !== undefined) child.material.roughness = Math.min(child.material.roughness, 0.04);
         if (child.material.metalness !== undefined) child.material.metalness = Math.max(child.material.metalness, 0.45);
         if ('clearcoat' in child.material) { child.material.clearcoat = 1.0; child.material.clearcoatRoughness = 0.02; }
+        
+        // ponytail: Make car windows darker (tinted)
+        const name = child.name.toLowerCase();
+        if ((name.includes('glass') || name.includes('window')) && !name.includes('light') && !name.includes('mirror')) {
+          child.material.color.setHex(0x050505); // Very dark color
+          if (child.material.transmission !== undefined) child.material.transmission = 0.2; // Less transparent if using transmission
+          if (child.material.opacity !== undefined && child.material.transparent) child.material.opacity = 0.85; // More opaque
+        }
+
         child.material.needsUpdate = true;
       }
     });
@@ -114,19 +243,82 @@ function PorscheModel() {
       .fromTo(groupRef.current.rotation, { x: 0.05, y: Math.PI * 0.2, z: 0 }, { x: 0.15, y: Math.PI * 0.80, z: 0, ease: 'power1.inOut' }, 0)
       .fromTo(groupRef.current.scale, { x: 7.2, y: 7.2, z: 7.2 }, { x: 7.5, y: 7.5, z: 7.5, ease: 'power1.inOut' }, 0);
 
-      // 4. Animasi ke Portfolio (Pindah ke tengah bawah)
-      gsap.timeline({
+      // 4. Animasi ke Portfolio (Pindah ke tengah & Meledak)
+      const portfolioTl = gsap.timeline({
         scrollTrigger: { trigger: '#portfolio', start: 'top bottom', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true }
       })
-      .fromTo(groupRef.current.position, { x: 3.0, y: 0.2, z: 0 }, { x: 0, y: -2.1, z: 0, ease: 'power1.inOut' }, 0)
-      .fromTo(groupRef.current.rotation, { x: 0.15, y: Math.PI * 0.80, z: 0 }, { x: 0.05, y: Math.PI * 2.2, z: 0, ease: 'power1.inOut' }, 0)
+      .fromTo(groupRef.current.position, { x: 3.0, y: 0.2, z: 0 }, { x: 0, y: 0, z: 0, ease: 'power1.inOut' }, 0)
+      .fromTo(groupRef.current.rotation, { x: 0.15, y: Math.PI * 0.80, z: 0 }, { x: 0.45, y: Math.PI * 2.2, z: 0, ease: 'power1.inOut' }, 0)
       .fromTo(groupRef.current.scale, { x: 7.5, y: 7.5, z: 7.5 }, { x: 5.5, y: 5.5, z: 5.5, ease: 'power1.inOut' }, 0);
 
-      // 5. Animasi ke Contact / Footer (Menghilang perlahan ke bawah)
-      gsap.timeline({
+      // ponytail: Animate components separating dynamically in 6 directions, pushing them further out
+      const offset = 0.85; // Reduced offset based on user request
+      parts.left.forEach((mesh) => {
+        const orig = originalPositions.get(mesh.uuid);
+        portfolioTl.to(mesh.position, { x: orig.x - offset, ease: 'power1.inOut' }, 0.45);
+      });
+      parts.right.forEach((mesh) => {
+        const orig = originalPositions.get(mesh.uuid);
+        portfolioTl.to(mesh.position, { x: orig.x + offset, ease: 'power1.inOut' }, 0.45);
+      });
+      parts.top.forEach((mesh) => {
+        const orig = originalPositions.get(mesh.uuid);
+        portfolioTl.to(mesh.position, { y: orig.y + offset * 0.7, ease: 'power1.inOut' }, 0.45);
+      });
+      parts.bottom.forEach((mesh) => {
+        const orig = originalPositions.get(mesh.uuid);
+        portfolioTl.to(mesh.position, { y: orig.y - offset * 0.5, ease: 'power1.inOut' }, 0.45);
+      });
+      parts.front.forEach((mesh) => {
+        const orig = originalPositions.get(mesh.uuid);
+        portfolioTl.to(mesh.position, { z: orig.z + offset, ease: 'power1.inOut' }, 0.45);
+      });
+      parts.rear.forEach((mesh) => {
+        const orig = originalPositions.get(mesh.uuid);
+        portfolioTl.to(mesh.position, { z: orig.z - offset, ease: 'power1.inOut' }, 0.45);
+      });
+
+      // 5. Animasi ke GithubStats (Menyatu kembali & Ganti Angle)
+      const githubTl = gsap.timeline({
+        scrollTrigger: { trigger: '#github-stats', start: 'top bottom', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true }
+      })
+      .fromTo(groupRef.current.position, { x: 0, y: 0, z: 0 }, { x: 0, y: 0.2, z: 0, ease: 'power1.inOut' }, 0)
+      .fromTo(groupRef.current.rotation, { x: 0.45, y: Math.PI * 2.2, z: 0 }, { x: 0.15, y: Math.PI * 3.75, z: 0, ease: 'power1.inOut' }, 0)
+      .fromTo(groupRef.current.scale, { x: 5.5, y: 5.5, z: 5.5 }, { x: 6.5, y: 6.5, z: 6.5, ease: 'power1.inOut' }, 0);
+
+      // ponytail: Re-assemble components
+      parts.left.forEach((mesh) => {
+        const orig = originalPositions.get(mesh.uuid);
+        githubTl.to(mesh.position, { x: orig.x, ease: 'power1.inOut' }, 0);
+      });
+      parts.right.forEach((mesh) => {
+        const orig = originalPositions.get(mesh.uuid);
+        githubTl.to(mesh.position, { x: orig.x, ease: 'power1.inOut' }, 0);
+      });
+      parts.top.forEach((mesh) => {
+        const orig = originalPositions.get(mesh.uuid);
+        githubTl.to(mesh.position, { y: orig.y, ease: 'power1.inOut' }, 0);
+      });
+      parts.bottom.forEach((mesh) => {
+        const orig = originalPositions.get(mesh.uuid);
+        githubTl.to(mesh.position, { y: orig.y, ease: 'power1.inOut' }, 0);
+      });
+      parts.front.forEach((mesh) => {
+        const orig = originalPositions.get(mesh.uuid);
+        githubTl.to(mesh.position, { z: orig.z, ease: 'power1.inOut' }, 0);
+      });
+      parts.rear.forEach((mesh) => {
+        const orig = originalPositions.get(mesh.uuid);
+        githubTl.to(mesh.position, { z: orig.z, ease: 'power1.inOut' }, 0);
+      });
+
+      // 6. Animasi ke Contact (Jatuh bebas menghilang)
+      const footerTl = gsap.timeline({
         scrollTrigger: { trigger: '#contact', start: 'top bottom', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true }
       })
-      .fromTo(groupRef.current.position, { x: 0, y: -2.1, z: 0 }, { x: 0, y: -2.5, z: 0, ease: 'power1.inOut' }, 0);
+      .fromTo(groupRef.current.position, { x: 0, y: 0.2, z: 0 }, { x: 0, y: -4.5, z: 0, ease: 'power2.in' }, 0)
+      .fromTo(groupRef.current.rotation, { x: 0.15, y: Math.PI * 3.75, z: 0 }, { x: -0.8, y: Math.PI * 4.2, z: 0, ease: 'power2.in' }, 0)
+      .fromTo(groupRef.current.scale, { x: 6.5, y: 6.5, z: 6.5 }, { x: 4.5, y: 4.5, z: 4.5, ease: 'power2.in' }, 0);
     });
 
     mm.add('(max-width: 767px)', () => {
@@ -148,7 +340,7 @@ function PorscheModel() {
     });
 
     return () => mm.revert();
-  }, []);
+  }, [parts, originalPositions]);
 
   return (
     <group ref={groupRef}>

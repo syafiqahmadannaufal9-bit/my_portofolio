@@ -78,8 +78,8 @@ export default function About() {
 
           <div>
             <a
-              href={frontmatter.resumeUrl}
-              download
+              href="/assets/Syafiq Ahmad Annaufal CV.pdf"
+              download="Syafiq Ahmad Annaufal CV.pdf"
               className="inline-flex items-center justify-center w-full sm:w-auto gap-3 px-6 py-4 rounded-xl font-bold transition-all bg-black hover:bg-gray-800 text-white shadow-lg"
             >
               <Download className="w-4 h-4" />

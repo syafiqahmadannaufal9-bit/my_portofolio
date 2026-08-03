@@ -1,9 +1,9 @@
 ---
-title: "Prototype Aplikasi Web"
+title: "Prototype HabitFlow App 1.0"
 summary: "Prototipe interaktif pengembangan aplikasi web yang berfokus pada eksperimen alur kerja pengguna dan antarmuka modern."
 category: "UI/UX & Prototype"
 techStack: ["React", "Tailwind CSS", "JavaScript", "Prototype"]
-thumbnail: ""
+thumbnail: "/assets/flow.png"
 gallery: []
 demoUrl: "https://github.com/syafiqahmadannaufal9-bit/prototype_aplikasi"
 githubUrl: "https://github.com/syafiqahmadannaufal9-bit/prototype_aplikasi"

@@ -22,22 +22,27 @@ export default function GithubStats() {
     fetchGithubProfile();
   }, [username]);
 
+  const calendarTheme = {
+    light: ['#f3f0ff', '#d8ccff', '#b399ff', '#8d66ff', '#5227FF'],
+    dark: ['#161b22', '#2d1a4d', '#4c2e8c', '#7146cc', '#5227FF']
+  };
+
   return (
     <section id="github-stats" className="py-24 px-6 z-10 text-black">
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-12">
-          <h2 className="text-xs uppercase tracking-widest font-bold mb-2 opacity-60 flex items-center justify-center gap-2">
-            <GithubIcon className="w-4 h-4" />
+          <h2 className="text-xs uppercase tracking-widest font-bold mb-2 text-[#5227FF] opacity-90 flex items-center justify-center gap-2">
+            <GithubIcon className="w-4 h-4 text-[#5227FF]" />
             Aktivitas Kode & Kontribusi
           </h2>
-          <h3 className="text-4xl sm:text-5xl font-black tracking-tight">
+          <h3 className="text-4xl sm:text-5xl font-black tracking-tight text-[#5227FF]">
             GitHub Overview
           </h3>
           <p className="mt-3 max-w-xl mx-auto text-base text-gray-700">
             Kilas balik statistik repositori, bahasa pemrograman yang paling sering digunakan, dan kalender kontribusi real-time.
           </p>
-          <div className="w-16 h-1 mx-auto mt-4 rounded-full bg-black" />
+          <div className="w-16 h-1 mx-auto mt-4 rounded-full bg-[#5227FF]" />
         </div>
 
         {/* Profile Overview Banner */}
@@ -69,7 +74,7 @@ export default function GithubStats() {
             href={`https://github.com/${username}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full md:w-auto px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all bg-black hover:bg-gray-900 text-white shadow-md text-sm"
+            className="w-full md:w-auto px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all bg-[#5227FF] hover:bg-[#5227FF]/80 text-white shadow-md text-sm"
           >
             <GithubIcon className="w-4 h-4" />
             Kunjungi Profil GitHub
@@ -91,6 +96,7 @@ export default function GithubStats() {
               blockSize={13}
               blockMargin={4}
               fontSize={14}
+              theme={calendarTheme}
               colorScheme="light"
               labels={{
                 totalCount: '{{count}} kontribusi dalam 1 tahun terakhir',

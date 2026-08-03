@@ -3,7 +3,7 @@ title: "GSAP Interactive Animation Lab"
 summary: "Eksperimen dan implementasi animasi interaktif berbasis GSAP (GreenSock) dan ScrollTrigger untuk pengalaman web dinamis."
 category: "Animation & Interactive"
 techStack: ["GSAP", "ScrollTrigger", "JavaScript", "CSS3"]
-thumbnail: ""
+thumbnail: "/assets/gsap.png"
 gallery: []
 demoUrl: "https://github.com/syafiqahmadannaufal9-bit/GSAP_Project"
 githubUrl: "https://github.com/syafiqahmadannaufal9-bit/GSAP_Project"

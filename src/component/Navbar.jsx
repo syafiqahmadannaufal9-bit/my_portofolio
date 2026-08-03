@@ -16,10 +16,10 @@ export default function Navbar() {
   ];
 
   const socialItems = [
-    { label: 'GitHub',    link: 'https://github.com' },
+    { label: 'GitHub',    link: 'https://github.com/syafiqahmadannaufal9-bit' },
     { label: 'LinkedIn',  link: 'https://linkedin.com' },
-    { label: 'WhatsApp',  link: 'https://wa.me/6281234567890' },
-    { label: 'Email',     link: 'mailto:contact@sukiman.dev' },
+    { label: 'WhatsApp',  link: 'https://wa.me/082121825192' },
+    { label: 'Email',     link: 'mailto:syafiqahmadannuafal9@gmail.com' },
   ];
 
   return (
@@ -27,7 +27,7 @@ export default function Navbar() {
       ref={menuRef}
       isFixed
       position="right"
-      logoText="SukiMAn"
+      logoText={<><span style={{ color: '#5227FF' }}>Web</span> Dev</>}
       colors={['#c8c8c8', '#1a1a1a']}
       items={menuItems}
       socialItems={socialItems}
