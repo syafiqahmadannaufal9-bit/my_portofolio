@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import Navbar from './component/Navbar';
 import Hero from './component/Hero';
 import About from './component/About';
@@ -14,7 +14,9 @@ import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-function App() {
+// App does NOT consume LanguageContext — memo prevents re-renders when language changes.
+// Only leaf components that use useLanguage() will update.
+const App = memo(function App() {
   useEffect(() => {
     const lenis = new Lenis();
     lenis.on('scroll', ScrollTrigger.update);
@@ -38,6 +40,6 @@ function App() {
       </main>
     </div>
   );
-}
+});
 
 export default App;

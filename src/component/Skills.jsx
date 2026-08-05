@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import styled from 'styled-components';
 import skillsData from '../content/skills.json';
 import { Code2, FileCode, Palette, Layout, Box, Cpu, Sparkles, Zap, GitBranch, Layers, Globe } from 'lucide-react';
 import { FigmaIcon } from './Icons';
+import { useLanguage } from '../context/LanguageContext';
+import { getTranslation } from '../i18n/translations';
 
 const ICON_MAP = {
   Code2, FileCode, Palette, Layout, Box, Cpu, Sparkles, Zap, GitBranch, Layers, Globe, Figma: FigmaIcon
@@ -42,7 +44,10 @@ const ProgressBar = styled.div`
   }
 `;
 
-export default function Skills() {
+const Skills = memo(function Skills() {
+  const { language } = useLanguage();
+  const t = (key) => getTranslation(language, `skills.${key}`);
+
   const [selectedCategory, setSelectedCategory] = useState('All');
   const categories = ['All', ...skillsData.map(c => c.category)];
   const filteredCategories = selectedCategory === 'All'
@@ -56,28 +61,12 @@ export default function Skills() {
     >
       <div className="w-full text-left max-w-xl mx-auto md:mx-0">
         <div className="mb-10">
-          <h2 className="text-xs uppercase tracking-widest font-bold mb-2 text-[#5227FF] opacity-90">Kemampuan Teknis</h2>
-          <h3 className="text-4xl sm:text-5xl font-black text-[#5227FF]">Tech Stack</h3>
+          <h2 className="text-xs uppercase tracking-widest font-bold mb-2 text-[#5227FF] opacity-90">{t('subtitle')}</h2>
+          <h3 className="text-4xl sm:text-5xl font-black text-[#5227FF]">{t('title')}</h3>
           <p className="mt-3 text-base text-gray-800">
-            Kombinasi teknologi frontend modern, grafik 3D interaktif, dan alat alur kerja profesional.
+            {t('desc')}
           </p>
           <div className="w-16 h-1 mt-4 rounded-full bg-[#5227FF]" />
-        </div>
-
-        <div className="flex flex-wrap gap-2 mb-8">
-          {categories.map((cat, idx) => (
-            <button
-              key={idx}
-              onClick={() => setSelectedCategory(cat)}
-              className={`px-4 py-2 rounded-full text-xs font-bold transition-all border backdrop-blur-md ${
-                selectedCategory === cat
-                  ? 'bg-[#5227FF] text-white border-[#5227FF]'
-                  : 'bg-white/80 text-gray-700 border-black/20 hover:border-[#5227FF] hover:text-[#5227FF]'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
         </div>
 
         <div className="space-y-10">
@@ -112,4 +101,6 @@ export default function Skills() {
       </div>
     </section>
   );
-}
+});
+
+export default Skills;

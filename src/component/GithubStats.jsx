@@ -1,9 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { GitHubCalendar } from 'react-github-calendar';
 import { GitCommit, ExternalLink } from 'lucide-react';
 import { GithubIcon } from './Icons';
+import { useLanguage } from '../context/LanguageContext';
+import { getTranslation } from '../i18n/translations';
 
-export default function GithubStats() {
+const GithubStats = memo(function GithubStats() {
+  const { language } = useLanguage();
+  const t = (key) => getTranslation(language, `github.${key}`);
+
   const username = 'syafiqahmadannaufal9-bit';
   const [profileData, setProfileData] = useState(null);
 
@@ -34,13 +39,13 @@ export default function GithubStats() {
         <div className="text-center mb-12">
           <h2 className="text-xs uppercase tracking-widest font-bold mb-2 text-[#5227FF] opacity-90 flex items-center justify-center gap-2">
             <GithubIcon className="w-4 h-4 text-[#5227FF]" />
-            Aktivitas Kode & Kontribusi
+            {t('subtitle')}
           </h2>
           <h3 className="text-4xl sm:text-5xl font-black tracking-tight text-[#5227FF]">
-            GitHub Overview
+            {t('title')}
           </h3>
           <p className="mt-3 max-w-xl mx-auto text-base text-gray-700">
-            Kilas balik statistik repositori, bahasa pemrograman yang paling sering digunakan, dan kalender kontribusi real-time.
+            {t('desc')}
           </p>
           <div className="w-16 h-1 mx-auto mt-4 rounded-full bg-[#5227FF]" />
         </div>
@@ -77,18 +82,16 @@ export default function GithubStats() {
             className="w-full md:w-auto px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all bg-[#5227FF] hover:bg-[#5227FF]/80 text-white shadow-md text-sm"
           >
             <GithubIcon className="w-4 h-4" />
-            Kunjungi Profil GitHub
+            {t('visitBtn')}
             <ExternalLink className="w-3.5 h-3.5" />
           </a>
         </div>
 
-
-
-        {/* GitHub Calendar Component (Placed before footer) */}
+        {/* GitHub Calendar Component */}
         <div className="p-6 sm:p-10 rounded-3xl border border-black/20 bg-white/80 backdrop-blur-xl shadow-xl">
           <h4 className="text-lg font-extrabold mb-6 flex items-center justify-center gap-2">
             <GitCommit className="w-5 h-5" />
-            Kalender Kontribusi GitHub (1 Tahun Terakhir)
+            {t('calendarTitle')}
           </h4>
           <div className="flex justify-center overflow-x-auto py-2">
             <GitHubCalendar
@@ -99,7 +102,7 @@ export default function GithubStats() {
               theme={calendarTheme}
               colorScheme="light"
               labels={{
-                totalCount: '{{count}} kontribusi dalam 1 tahun terakhir',
+                totalCount: t('totalCountLabel'),
               }}
             />
           </div>
@@ -107,4 +110,6 @@ export default function GithubStats() {
       </div>
     </section>
   );
-}
+});
+
+export default GithubStats;

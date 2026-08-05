@@ -1,19 +1,15 @@
 import React, { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useLanguage } from '../context/LanguageContext';
+import { getTranslation } from '../i18n/translations';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const DEFAULT_SENTENCES = [
+export default function KineticIntro() {
+  const { language } = useLanguage();
+  const sentences = getTranslation(language, 'kinetic');
 
-  "Hi! I'm Anam",
-  "A Junior Web Designer",
-  "Build with Dedication and Passion",
-  "Welcome to My Website!"
-  
-];
-
-export default function KineticIntro({ sentences = DEFAULT_SENTENCES }) {
   const containerRef = useRef(null);
   const bgRef = useRef(null);
   const sentenceRefs = useRef([]);
@@ -63,7 +59,7 @@ export default function KineticIntro({ sentences = DEFAULT_SENTENCES }) {
   }, [sentences]);
 
   return (
-    <section ref={containerRef} className="w-full h-[500vh] bg-transparent pointer-events-none">
+    <section ref={containerRef} className="w-full h-[700vh] bg-transparent pointer-events-none">
       <div 
         ref={bgRef} 
         className="fixed top-0 left-0 w-full h-screen flex items-center justify-center overflow-hidden bg-white px-6 pointer-events-auto z-[60]"
@@ -74,7 +70,7 @@ export default function KineticIntro({ sentences = DEFAULT_SENTENCES }) {
             <div 
               key={sIdx}
               ref={el => sentenceRefs.current[sIdx] = el}
-              className="absolute max-w-5xl text-center text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif italic font-light tracking-wide text-gray-900 flex flex-wrap justify-center gap-x-2 sm:gap-x-3 gap-y-2 leading-relaxed"
+              className="absolute max-w-6xl text-center text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif italic font-light tracking-wide text-gray-900 flex flex-wrap justify-center gap-x-2 sm:gap-x-3 gap-y-2 leading-relaxed"
             >
               {words.map((word, wIdx) => (
                 <span key={wIdx} className="word inline-block opacity-0 will-change-[opacity,filter,transform]">

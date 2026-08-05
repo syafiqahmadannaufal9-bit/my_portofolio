@@ -336,6 +336,55 @@
 .sm-socials-list:hover .sm-socials-link { opacity: 0.35; }
 .sm-socials-list:hover .sm-socials-link:hover { opacity: 1; }
 
+/* ─── Header Actions & Language Switcher ───── */
+.sm-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.sm-header-lang {
+  display: flex;
+  align-items: center;
+}
+
+.sm-lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 9999px;
+  padding: 3px;
+  gap: 2px;
+  user-select: none;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.sm-lang-btn {
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #555;
+  background: transparent;
+}
+
+.sm-lang-btn:hover {
+  color: #000;
+}
+
+.sm-lang-btn.active {
+  background: var(--sm-accent, #5227FF);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(82, 39, 255, 0.35);
+}
+
 /* ─── Responsive ──────────────────────────── */
 @media (max-width: 768px) {
   .staggered-menu-panel,

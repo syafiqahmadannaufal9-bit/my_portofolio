@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDownRight, FolderGit2, Mail } from 'lucide-react';
-import RotatingText from './RotatingText';
+import { useLanguage } from '../context/LanguageContext';
+import { getTranslation } from '../i18n/translations';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 35 },
@@ -12,7 +13,10 @@ const fadeUp = {
   }),
 };
 
-export default function Hero() {
+const Hero = memo(function Hero() {
+  const { language } = useLanguage();
+  const t = (key) => getTranslation(language, `hero.${key}`);
+
   const prefersReduced =
     typeof window !== 'undefined' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -32,9 +36,9 @@ export default function Hero() {
           custom={1}
           className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-none mb-6 text-black"
         >
-          Ingin Membuat <br className="hidden sm:block" />
+          {t('titleLine1')} <br className="hidden sm:block" />
           <span className="text-[#5227FF] font-serif italic font-light">
-            Web 3D & Modern?
+            {t('titleLine2')}
           </span>
         </motion.h1>
 
@@ -43,8 +47,8 @@ export default function Hero() {
           custom={2}
           className="text-lg sm:text-xl font-normal leading-relaxed mb-6 text-gray-800"
         >
-          Halo, saya <span className="font-serif italic font-bold text-[#5227FF]">Syafiq Ahmad</span>.{' '}
-          Fokus membangun aplikasi web interaktif kelas dunia menggunakan React, Three.js, GSAP, dan Tailwind CSS.
+          {t('bioPrefix')} <span className="font-serif italic font-bold text-[#5227FF]">{t('name')}</span>
+          {t('bioSuffix')}
         </motion.p>
 
         <motion.div
@@ -57,14 +61,14 @@ export default function Hero() {
             className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-all duration-300 transform hover:-translate-y-1 bg-black hover:bg-gray-900 text-white shadow-lg"
           >
             <FolderGit2 className="w-5 h-5" />
-            Lihat Portofolio
+            {t('btnPortfolio')}
           </a>
           <a
             href="#contact"
             className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-3 border backdrop-blur-md transition-all duration-300 transform hover:-translate-y-1 border-black bg-white/80 hover:bg-black hover:text-white text-black"
           >
             <Mail className="w-5 h-5" />
-            Hubungi Saya
+            {t('btnContact')}
           </a>
         </motion.div>
       </div>
@@ -76,8 +80,10 @@ export default function Hero() {
         onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
       >
         <ArrowDownRight className="w-5 h-5 animate-bounce" />
-        <span className="text-xs uppercase tracking-widest font-semibold">Scroll Untuk Lanjut</span>
+        <span className="text-xs uppercase tracking-widest font-semibold">{t('scrollText')}</span>
       </motion.div>
     </section>
   );
-}
+});
+
+export default Hero;

@@ -2,8 +2,13 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import { X, ExternalLink, Layers, Calendar, FolderGit2 } from 'lucide-react';
 import { GithubIcon } from './Icons';
+import { useLanguage } from '../context/LanguageContext';
+import { getTranslation } from '../i18n/translations';
 
 export default function ProjectModal({ project, onClose }) {
+  const { language } = useLanguage();
+  const t = (key) => getTranslation(language, `modal.${key}`);
+
   if (!project) return null;
 
   const { title, summary, category, techStack, thumbnail, gallery, demoUrl, githubUrl, date } = project.frontmatter;
@@ -15,7 +20,7 @@ export default function ProjectModal({ project, onClose }) {
       <div className="relative w-full max-w-4xl max-h-[90vh] rounded-3xl border overflow-y-auto shadow-2xl z-10 bg-white border-black text-black">
         <button
           onClick={onClose}
-          aria-label="Tutup Modal"
+          aria-label={t('close')}
           className="absolute top-4 right-4 p-2.5 rounded-full border z-20 transition-all hover:rotate-90 bg-white border-black text-black hover:bg-black hover:text-white"
         >
           <X className="w-5 h-5" />
@@ -27,7 +32,7 @@ export default function ProjectModal({ project, onClose }) {
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center bg-gray-100 text-gray-400">
               <FolderGit2 className="w-12 h-12 mb-2 opacity-60" />
-              <span className="text-xs font-bold uppercase tracking-widest text-gray-400">Project Details</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-gray-400">{t('details')}</span>
             </div>
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent opacity-60" />
@@ -53,7 +58,7 @@ export default function ProjectModal({ project, onClose }) {
             <div className="mb-8">
               <h4 className="text-xs uppercase tracking-widest font-bold mb-3 opacity-60 flex items-center gap-1.5">
                 <Layers className="w-4 h-4" />
-                Teknologi Digunakan
+                {t('techUsed')}
               </h4>
               <div className="flex flex-wrap gap-2">
                 {techStack.map((tech, idx) => (
@@ -71,7 +76,7 @@ export default function ProjectModal({ project, onClose }) {
 
           {gallery && gallery.length > 1 && (
             <div className="mb-8">
-              <h4 className="text-xs uppercase tracking-widest font-bold mb-3 opacity-60">Galeri Tampilan</h4>
+              <h4 className="text-xs uppercase tracking-widest font-bold mb-3 opacity-60">{t('gallery')}</h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {gallery.map((img, gIdx) => (
                   <img key={gIdx} src={img} alt={`${title} screenshot ${gIdx + 1}`} className="w-full h-44 object-cover rounded-xl border border-current/10" />
@@ -86,7 +91,7 @@ export default function ProjectModal({ project, onClose }) {
                 className="px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all bg-black hover:bg-gray-900 text-white"
               >
                 <ExternalLink className="w-4 h-4" />
-                Lihat Live Demo
+                {t('liveDemo')}
               </a>
             )}
             {githubUrl && (
@@ -94,7 +99,7 @@ export default function ProjectModal({ project, onClose }) {
                 className="px-6 py-3 rounded-xl font-bold flex items-center gap-2 border transition-all border-black bg-white hover:bg-black hover:text-white text-black"
               >
                 <GithubIcon className="w-4 h-4" />
-                Repository GitHub
+                {t('repo')}
               </a>
             )}
           </div>

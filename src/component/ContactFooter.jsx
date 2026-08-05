@@ -1,8 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, memo } from 'react';
 import { Mail, MessageSquare, ArrowUp, Send } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from './Icons';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useLanguage } from '../context/LanguageContext';
+import { getTranslation } from '../i18n/translations';
 
 import cubeSvg from '../assets/Shapes/cube.svg';
 import hexaSvg from '../assets/Shapes/hexa.svg';
@@ -11,7 +13,10 @@ import pyramidSvg from '../assets/Shapes/pyramid.svg';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function ContactFooter() {
+const ContactFooter = memo(function ContactFooter() {
+  const { language } = useLanguage();
+  const t = (key) => getTranslation(language, `contact.${key}`);
+
   const currentYear = new Date().getFullYear();
   const shapesRef = useRef([]);
 
@@ -23,7 +28,7 @@ export default function ContactFooter() {
   ];
 
   useEffect(() => {
-    // ponytail: reveal from further below the footer
+    // reveal from further below the footer
     gsap.fromTo(shapesRef.current,
       { y: 350, opacity: 0, rotation: -30 },
       {
@@ -40,7 +45,7 @@ export default function ContactFooter() {
       }
     );
 
-    // ponytail: continuous float & rotate
+    // continuous float & rotate
     shapesRef.current.forEach((shape, i) => {
       gsap.to(shape, {
         y: (i % 2 === 0) ? -10 : 10,
@@ -49,7 +54,7 @@ export default function ContactFooter() {
         yoyo: true,
         repeat: -1,
         ease: 'sine.inOut',
-        delay: 1.5 // start after reveal
+        delay: 1.5
       });
     });
   }, []);
@@ -67,19 +72,19 @@ export default function ContactFooter() {
 
       <div className="max-w-5xl mx-auto relative z-20">
         <div className="p-8 sm:p-14 rounded-3xl border text-center relative overflow-hidden mb-16 shadow-2xl backdrop-blur-xl bg-black/90 text-white border-black">
-          <h2 className="text-xs uppercase tracking-widest font-bold mb-3 opacity-75">Mari Bekerja Sama</h2>
+          <h2 className="text-xs uppercase tracking-widest font-bold mb-3 opacity-75">{t('subtitle')}</h2>
           <h3 className="text-3xl sm:text-5xl font-black mb-6 tracking-tight">
-            Tertarik Membangun Proyek Impian Anda?
+            {t('title')}
           </h3>
           <p className="max-w-xl mx-auto text-sm sm:text-base opacity-80 mb-8 leading-relaxed">
-            Apakah Anda mencari developer untuk melamar pekerjaan full-time atau membutuhkan jasa freelance web 3D interaktif, saya siap membantu!
+            {t('desc')}
           </p>
           <a
-            href="mailto:contact@sukiman.dev"
+            href="mailto:syafiqahmadannuafal9@gmail.com"
             className="inline-flex items-center gap-3 px-8 py-4 rounded-xl font-extrabold text-base transition-all transform hover:scale-105 bg-white hover:bg-gray-100 text-black"
           >
             <Send className="w-5 h-5" />
-            Kirim Pesan Email
+            {t('sendEmail')}
           </a>
         </div>
 
@@ -102,16 +107,18 @@ export default function ContactFooter() {
         </div>
 
         <div className="border-t border-gray-200 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-semibold opacity-75 relative z-20">
-          <p>© {currentYear} SukiMAn. All Rights Reserved.</p>
+          <p>© {currentYear} Syafiq Ahmad Annaufal. {t('rights')}</p>
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-black/20 text-black transition-all hover:opacity-100"
           >
-            Kembali ke Atas
+            {t('backToTop')}
             <ArrowUp className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>
     </footer>
   );
-}
+});
+
+export default ContactFooter;

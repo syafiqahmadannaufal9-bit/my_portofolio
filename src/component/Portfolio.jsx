@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { loadMarkdownCollection } from '../utils/markdown';
 import ProjectModal from './ProjectModal';
 import { ArrowUpRight, FolderGit2 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
+import { getTranslation } from '../i18n/translations';
 
-export default function Portfolio() {
-  const [selectedCategory, setSelectedCategory] = useState('Semua');
+const Portfolio = memo(function Portfolio() {
+  const { language } = useLanguage();
+  const t = (key) => getTranslation(language, `portfolio.${key}`);
+
+  const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [activeModalProject, setActiveModalProject] = useState(null);
 
   const rawProjectModules = import.meta.glob('../content/projects/*.md', {
@@ -14,8 +19,9 @@ export default function Portfolio() {
   });
 
   const projects = loadMarkdownCollection(rawProjectModules);
-  const categories = ['Semua', ...new Set(projects.map(p => p.frontmatter.category).filter(Boolean))];
-  const filteredProjects = selectedCategory === 'Semua'
+  const rawCategories = [...new Set(projects.map(p => p.frontmatter.category).filter(Boolean))];
+
+  const filteredProjects = selectedCategory === 'ALL'
     ? projects
     : projects.filter(p => p.frontmatter.category === selectedCategory);
 
@@ -26,16 +32,26 @@ export default function Portfolio() {
     >
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-xs uppercase tracking-widest font-bold mb-2 text-[#5227FF] opacity-90">Karya & Hasil Kerja</h2>
-          <h3 className="text-4xl sm:text-5xl font-black text-[#5227FF]">Galeri Portofolio</h3>
+          <h2 className="text-xs uppercase tracking-widest font-bold mb-2 text-[#5227FF] opacity-90">{t('subtitle')}</h2>
+          <h3 className="text-4xl sm:text-5xl font-black text-[#5227FF]">{t('title')}</h3>
           <p className="mt-3 max-w-xl mx-auto text-base text-gray-800">
-            Koleksi proyek pilihan yang menunjukkan keahlian pengembangan 3D Web, React, dan integrasi UI/UX modern.
+            {t('desc')}
           </p>
           <div className="w-16 h-1 mx-auto mt-4 rounded-full bg-[#5227FF]" />
         </div>
 
         <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {categories.map((cat, idx) => (
+          <button
+            onClick={() => setSelectedCategory('ALL')}
+            className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all border backdrop-blur-md ${
+              selectedCategory === 'ALL'
+                ? 'bg-[#5227FF] text-white border-[#5227FF]'
+                : 'bg-white/80 text-gray-700 border-black/20 hover:border-[#5227FF] hover:text-[#5227FF]'
+            }`}
+          >
+            {t('allCategory')}
+          </button>
+          {rawCategories.map((cat, idx) => (
             <button
               key={idx}
               onClick={() => setSelectedCategory(cat)}
@@ -70,7 +86,7 @@ export default function Portfolio() {
                     ) : (
                       <div className="w-full h-full flex flex-col items-center justify-center bg-gray-100 text-gray-400 group-hover:bg-gray-200/80 transition-colors">
                         <FolderGit2 className="w-10 h-10 mb-2 opacity-60" />
-                        <span className="text-[11px] font-bold uppercase tracking-widest text-gray-400">Project Preview</span>
+                        <span className="text-[11px] font-bold uppercase tracking-widest text-gray-400">{t('preview')}</span>
                       </div>
                     )}
                     <div className="absolute top-4 left-4">
@@ -111,4 +127,6 @@ export default function Portfolio() {
       <ProjectModal project={activeModalProject} onClose={() => setActiveModalProject(null)} />
     </section>
   );
-}
+});
+
+export default Portfolio;

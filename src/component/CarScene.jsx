@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, Suspense, useState, useMemo } from 'react';
+import React, { useRef, useEffect, Suspense, useState, useMemo, memo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useGLTF, Environment, Html, useProgress } from '@react-three/drei';
 import gsap from 'gsap';
@@ -20,7 +20,7 @@ function checkWebGLSupport() {
   }
 }
 
-function Loader() {
+const Loader = memo(function Loader() {
   const { progress } = useProgress();
   return (
     <Html center>
@@ -31,10 +31,11 @@ function Loader() {
       </div>
     </Html>
   );
-}
+});
 
 function PorscheModel() {
-  const { scene } = useGLTF('/models/2019_porsche_911_991.2_gt3_rs.glb');
+  const { scene: originalScene } = useGLTF('/models/2019_porsche_911_991.2_gt3_rs.glb');
+  const scene = useMemo(() => originalScene.clone(true), [originalScene]);
   const groupRef = useRef();
 
   // Normalize model size and compute shadow parameters
@@ -229,27 +230,27 @@ function PorscheModel() {
 
       // 2. Animasi ke About (Pindah ke kiri)
       gsap.timeline({
-        scrollTrigger: { trigger: '#about', start: 'top bottom', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true }
+        scrollTrigger: { trigger: '#about', start: 'top bottom', end: 'bottom bottom', scrub: true }
       })
-      .fromTo(groupRef.current.position, { x: 2.8, y: -0.2, z: 0 }, { x: -3.2, y: 0, z: 0, ease: 'power1.inOut' }, 0)
-      .fromTo(groupRef.current.rotation, { x: 0.05, y: Math.PI * -0.35, z: 0 }, { x: 0.05, y: Math.PI * 0.2, z: 0, ease: 'power1.inOut' }, 0)
-      .fromTo(groupRef.current.scale, { x: 7.5, y: 7.5, z: 7.5 }, { x: 7.2, y: 7.2, z: 7.2, ease: 'power1.inOut' }, 0);
+      .fromTo(groupRef.current.position, { x: 2.8, y: -0.2, z: 0 }, { x: -3.2, y: 0, z: 0, ease: 'power1.inOut', immediateRender: false }, 0)
+      .fromTo(groupRef.current.rotation, { x: 0.05, y: Math.PI * -0.35, z: 0 }, { x: 0.05, y: Math.PI * 0.2, z: 0, ease: 'power1.inOut', immediateRender: false }, 0)
+      .fromTo(groupRef.current.scale, { x: 7.5, y: 7.5, z: 7.5 }, { x: 7.2, y: 7.2, z: 7.2, ease: 'power1.inOut', immediateRender: false }, 0);
 
       // 3. Animasi ke Skills (Pindah ke kanan)
       gsap.timeline({
-        scrollTrigger: { trigger: '#skills', start: 'top bottom', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true }
+        scrollTrigger: { trigger: '#skills', start: 'top bottom', end: 'bottom bottom', scrub: true }
       })
-      .fromTo(groupRef.current.position, { x: -3.2, y: 0, z: 0 }, { x: 3.0, y: 0.2, z: 0, ease: 'power1.inOut' }, 0)
-      .fromTo(groupRef.current.rotation, { x: 0.05, y: Math.PI * 0.2, z: 0 }, { x: 0.15, y: Math.PI * 0.80, z: 0, ease: 'power1.inOut' }, 0)
-      .fromTo(groupRef.current.scale, { x: 7.2, y: 7.2, z: 7.2 }, { x: 7.5, y: 7.5, z: 7.5, ease: 'power1.inOut' }, 0);
+      .fromTo(groupRef.current.position, { x: -3.2, y: 0, z: 0 }, { x: 3.0, y: 0.2, z: 0, ease: 'power1.inOut', immediateRender: false }, 0)
+      .fromTo(groupRef.current.rotation, { x: 0.05, y: Math.PI * 0.2, z: 0 }, { x: 0.15, y: Math.PI * 0.80, z: 0, ease: 'power1.inOut', immediateRender: false }, 0)
+      .fromTo(groupRef.current.scale, { x: 7.2, y: 7.2, z: 7.2 }, { x: 7.5, y: 7.5, z: 7.5, ease: 'power1.inOut', immediateRender: false }, 0);
 
       // 4. Animasi ke Portfolio (Pindah ke tengah & Meledak)
       const portfolioTl = gsap.timeline({
-        scrollTrigger: { trigger: '#portfolio', start: 'top bottom', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true }
+        scrollTrigger: { trigger: '#portfolio', start: 'top bottom', end: 'bottom bottom', scrub: true }
       })
-      .fromTo(groupRef.current.position, { x: 3.0, y: 0.2, z: 0 }, { x: 0, y: 0, z: 0, ease: 'power1.inOut' }, 0)
-      .fromTo(groupRef.current.rotation, { x: 0.15, y: Math.PI * 0.80, z: 0 }, { x: 0.45, y: Math.PI * 2.2, z: 0, ease: 'power1.inOut' }, 0)
-      .fromTo(groupRef.current.scale, { x: 7.5, y: 7.5, z: 7.5 }, { x: 5.5, y: 5.5, z: 5.5, ease: 'power1.inOut' }, 0);
+      .fromTo(groupRef.current.position, { x: 3.0, y: 0.2, z: 0 }, { x: 0, y: 0, z: 0, ease: 'power1.inOut', immediateRender: false }, 0)
+      .fromTo(groupRef.current.rotation, { x: 0.15, y: Math.PI * 0.80, z: 0 }, { x: 0.45, y: Math.PI * 2.2, z: 0, ease: 'power1.inOut', immediateRender: false }, 0)
+      .fromTo(groupRef.current.scale, { x: 7.5, y: 7.5, z: 7.5 }, { x: 5.5, y: 5.5, z: 5.5, ease: 'power1.inOut', immediateRender: false }, 0);
 
       // ponytail: Animate components separating dynamically in 6 directions, pushing them further out
       const offset = 0.85; // Reduced offset based on user request
@@ -280,11 +281,11 @@ function PorscheModel() {
 
       // 5. Animasi ke GithubStats (Menyatu kembali & Ganti Angle)
       const githubTl = gsap.timeline({
-        scrollTrigger: { trigger: '#github-stats', start: 'top bottom', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true }
+        scrollTrigger: { trigger: '#github-stats', start: 'top bottom', end: 'bottom bottom', scrub: true }
       })
-      .fromTo(groupRef.current.position, { x: 0, y: 0, z: 0 }, { x: 0, y: 0.2, z: 0, ease: 'power1.inOut' }, 0)
-      .fromTo(groupRef.current.rotation, { x: 0.45, y: Math.PI * 2.2, z: 0 }, { x: 0.15, y: Math.PI * 3.75, z: 0, ease: 'power1.inOut' }, 0)
-      .fromTo(groupRef.current.scale, { x: 5.5, y: 5.5, z: 5.5 }, { x: 6.5, y: 6.5, z: 6.5, ease: 'power1.inOut' }, 0);
+      .fromTo(groupRef.current.position, { x: 0, y: 0, z: 0 }, { x: 0, y: 0.2, z: 0, ease: 'power1.inOut', immediateRender: false }, 0)
+      .fromTo(groupRef.current.rotation, { x: 0.45, y: Math.PI * 2.2, z: 0 }, { x: 0.15, y: Math.PI * 3.75, z: 0, ease: 'power1.inOut', immediateRender: false }, 0)
+      .fromTo(groupRef.current.scale, { x: 5.5, y: 5.5, z: 5.5 }, { x: 6.5, y: 6.5, z: 6.5, ease: 'power1.inOut', immediateRender: false }, 0);
 
       // ponytail: Re-assemble components
       parts.left.forEach((mesh) => {
@@ -314,11 +315,11 @@ function PorscheModel() {
 
       // 6. Animasi ke Contact (Jatuh bebas menghilang)
       const footerTl = gsap.timeline({
-        scrollTrigger: { trigger: '#contact', start: 'top bottom', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true }
+        scrollTrigger: { trigger: '#contact', start: 'top bottom', end: 'bottom bottom', scrub: true }
       })
-      .fromTo(groupRef.current.position, { x: 0, y: 0.2, z: 0 }, { x: 0, y: -4.5, z: 0, ease: 'power2.in' }, 0)
-      .fromTo(groupRef.current.rotation, { x: 0.15, y: Math.PI * 3.75, z: 0 }, { x: -0.8, y: Math.PI * 4.2, z: 0, ease: 'power2.in' }, 0)
-      .fromTo(groupRef.current.scale, { x: 6.5, y: 6.5, z: 6.5 }, { x: 4.5, y: 4.5, z: 4.5, ease: 'power2.in' }, 0);
+      .fromTo(groupRef.current.position, { x: 0, y: 0.2, z: 0 }, { x: 0, y: -4.5, z: 0, ease: 'power2.in', immediateRender: false }, 0)
+      .fromTo(groupRef.current.rotation, { x: 0.15, y: Math.PI * 3.75, z: 0 }, { x: -0.8, y: Math.PI * 4.2, z: 0, ease: 'power2.in', immediateRender: false }, 0)
+      .fromTo(groupRef.current.scale, { x: 6.5, y: 6.5, z: 6.5 }, { x: 4.5, y: 4.5, z: 4.5, ease: 'power2.in', immediateRender: false }, 0);
     });
 
     mm.add('(max-width: 767px)', () => {
@@ -359,7 +360,9 @@ try {
   console.warn('Preload model failed:', e);
 }
 
-export default function CarScene() {
+// Wrap with memo so language context changes never cause CarScene to re-render.
+// CarScene has no language-dependent props — it must stay completely isolated.
+const CarScene = memo(function CarScene() {
   const [hasWebGL, setHasWebGL] = useState(true);
 
   useEffect(() => {
@@ -412,4 +415,6 @@ export default function CarScene() {
       </Canvas>
     </div>
   );
-}
+});
+
+export default CarScene;
